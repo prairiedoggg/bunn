@@ -1,0 +1,53 @@
+<section class="grid gap-6 lg:grid-cols-[1fr_420px]">
+  <article class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-950">
+    <div class="flex items-start justify-between gap-4">
+      <div class="min-w-0">
+        <h1 class="break-words text-2xl font-black tracking-tight text-slate-900 dark:text-slate-100"><%= @story.title %></h1>
+        <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">
+          <span class="font-medium"><%= display_pen_name(@story.pen_name) %></span>
+          <span class="mx-1 text-slate-300 dark:text-slate-700">·</span>
+          <span class="text-slate-500 dark:text-slate-400"><%= l(@story.created_at, format: :short) %></span>
+        </p>
+      </div>
+
+      <div class="flex shrink-0 items-center gap-2">
+        <%= link_to "수정", edit_story_path(@story), class: "inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 shadow-sm hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-200 dark:hover:bg-slate-900" %>
+        <%= button_to "삭제", @story, method: :delete, data: { turbo_confirm: "이 소설을 삭제할까요?" }, class: "inline-flex items-center justify-center rounded-xl border border-rose-200 bg-rose-50 px-3 py-2 text-sm font-semibold text-rose-700 shadow-sm hover:bg-rose-100 dark:border-rose-900/40 dark:bg-rose-950/40 dark:text-rose-100 dark:hover:bg-rose-950/60" %>
+      </div>
+    </div>
+
+    <hr class="my-6 border-slate-200 dark:border-slate-800" />
+
+    <div class="whitespace-pre-wrap break-words text-base leading-relaxed text-slate-800 dark:text-slate-200">
+      <%= @story.body %>
+    </div>
+  </article>
+
+  <aside class="space-y-4">
+    <div class="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-950">
+      <div class="flex items-baseline justify-between gap-2">
+        <h2 class="text-base font-bold text-slate-900 dark:text-slate-100">
+          합평
+          (<span id="critiques_count" class="tabular-nums"><%= @story.critiques_count %></span>)
+        </h2>
+        <%= link_to "목록", stories_path, class: "text-sm font-semibold text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-slate-100" %>
+      </div>
+
+      <div class="mt-4">
+        <%= render "critiques/form", story: @story, critique: @critique %>
+      </div>
+    </div>
+
+    <div class="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-950">
+      <div id="critiques" class="space-y-3">
+        <% if @critiques.any? %>
+          <% @critiques.each do |critique| %>
+            <%= render "critiques/critique", story: @story, critique: critique %>
+          <% end %>
+        <% else %>
+          <p class="text-sm text-slate-600 dark:text-slate-300">아직 합평이 없어요. 첫 합평을 남겨주세요.</p>
+        <% end %>
+      </div>
+    </div>
+  </aside>
+</section>

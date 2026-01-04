@@ -1,0 +1,26 @@
+<section class="space-y-6">
+  <div class="flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
+    <div>
+      <h1 class="text-2xl font-black tracking-tight text-slate-900 dark:text-slate-100">문(文)</h1>
+      <p class="mt-1 text-sm text-slate-600 dark:text-slate-300">짧은 소설을 올리고, 정직한 합평을 나누는 곳.</p>
+    </div>
+
+    <%= link_to "새 소설 쓰기", new_story_path, class: "inline-flex items-center justify-center rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-slate-800 active:bg-slate-950 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100" %>
+  </div>
+
+  <% if @stories.any? %>
+    <div id="stories" class="grid gap-4 md:grid-cols-2">
+      <% @stories.each do |story| %>
+        <%= render story %>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="rounded-3xl border border-dashed border-slate-300 bg-white p-10 text-center dark:border-slate-700 dark:bg-slate-950">
+      <p class="text-sm font-medium text-slate-700 dark:text-slate-200">아직 올라온 소설이 없어요.</p>
+      <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">첫 번째 글을 올려볼까요?</p>
+      <div class="mt-5">
+        <%= link_to "첫 소설 쓰기", new_story_path, class: "inline-flex items-center justify-center rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-slate-800 active:bg-slate-950 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100" %>
+      </div>
+    </div>
+  <% end %>
+</section>

@@ -1,0 +1,4 @@
+<%= turbo_stream.prepend "critiques", partial: "critiques/critique", locals: { story: @story, critique: @critique } %>
+<%= turbo_stream.replace "critique_form", partial: "critiques/form", locals: { story: @story, critique: @story.critiques.new } %>
+<%= turbo_stream.replace "critiques_count", @story.reload.critiques_count %>
+

@@ -1,0 +1,20 @@
+ko:
+  time:
+    formats:
+      short: "%Y-%m-%d %H:%M"
+  date:
+    formats:
+      short: "%Y-%m-%d"
+  activerecord:
+    models:
+      story: "소설"
+      critique: "합평"
+    attributes:
+      story:
+        title: "제목"
+        pen_name: "필명"
+        body: "본문"
+      critique:
+        pen_name: "필명"
+        body: "합평"
+
