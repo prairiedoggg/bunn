@@ -14,6 +14,19 @@ services:
       BINDING: "0.0.0.0"
     command: bin/dev
 
+  frontend:
+    image: node:22-slim
+    working_dir: /app
+    ports:
+      - "3001:3000"
+    volumes:
+      - ./frontend:/app
+    environment:
+      API_BASE_URL: "http://web:3000"
+    depends_on:
+      - web
+    command: sh -lc "npm install && npm run dev -- --hostname 0.0.0.0 --port 3000"
+
 volumes:
   bundle:
 

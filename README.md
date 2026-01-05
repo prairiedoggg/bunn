@@ -21,7 +21,7 @@ docker compose run --rm web bin/rails db:seed
 docker compose up
 ```
 
-브라우저에서 `http://localhost:3000` 접속.
+브라우저에서 **Next 프론트** `http://localhost:3001` 접속. (Rails는 API/관리용으로 `http://localhost:3000`)
 
 ## 주요 기능(현재)
 
@@ -29,3 +29,8 @@ docker compose up
 - 합평(Critique) 작성/삭제: Turbo Stream으로 즉시 반영
 - 다크모드 토글(Stimulus + localStorage)
 
+## Next.js 프론트(현재)
+
+- `frontend/` (App Router + Tailwind)
+- 소설 목록/상세/작성 + 합평 작성/삭제가 **Next에서 동작**
+- 프록시는 Next `rewrites(/api/*)`로 Rails `api/*`에 연결

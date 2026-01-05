@@ -73,4 +73,7 @@ Rails.application.configure do
 
   # Raise error when a before_action's only/except options reference missing actions
   config.action_controller.raise_on_missing_callback_actions = true
+
+  # Next.js(dev container)에서 Rails API를 프록시할 때 Host가 `web:3000`으로 들어올 수 있어 허용합니다.
+  config.hosts << "web"
 end
