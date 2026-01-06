@@ -6,7 +6,18 @@ Rails.application.routes.draw do
   end
 
   namespace :api do
+    post "auth/register", to: "auth#register"
+    post "auth/login", to: "auth#login"
+    get "auth/me", to: "auth#me"
+
+    match "auth/:provider/callback", to: "oauth_callbacks#callback", via: %i[get post]
+    match "auth/failure", to: "oauth_callbacks#failure", via: %i[get post]
+
+    resources :tags, only: %i[index]
     resources :stories, only: %i[index show create] do
+      collection do
+        get :random
+      end
       resources :critiques, only: %i[create destroy]
     end
   end

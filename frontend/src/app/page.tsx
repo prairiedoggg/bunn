@@ -1,14 +1,25 @@
 import Link from "next/link"
-import { listStories } from "@/lib/api"
+import { listStories, listTags } from "@/lib/api"
+import { StoryFilters } from "@/components/StoryFilters"
 
-export default async function Home() {
-  const stories = await listStories()
+type Props = {
+  searchParams: Promise<{ q?: string; tag?: string }>
+}
+
+export default async function Home({ searchParams }: Props) {
+  const sp = await searchParams
+  const q = sp.q
+  const tag = sp.tag
+
+  const [stories, tags] = await Promise.all([listStories({ q, tag }), listTags()])
   return (
     <section className="space-y-6">
       <div>
         <h1 className="text-2xl font-black tracking-tight">문(文)</h1>
         <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">짧은 소설을 올리고, 정직한 합평을 나누는 곳.</p>
       </div>
+
+      <StoryFilters tags={tags} current={{ q, tag }} />
 
       {stories.length === 0 ? (
         <div className="rounded-3xl border border-dashed border-slate-300 bg-white p-10 text-center dark:border-slate-700 dark:bg-slate-950">
@@ -29,6 +40,19 @@ export default async function Home() {
                 <span className="mx-1 text-slate-300 dark:text-slate-700">·</span>
                 <span className="text-slate-500 dark:text-slate-400">{new Date(s.created_at).toLocaleString("ko-KR")}</span>
               </p>
+              {s.tags?.length ? (
+                <p className="mt-2 flex flex-wrap gap-2">
+                  {s.tags.slice(0, 5).map((t) => (
+                    <Link
+                      key={t}
+                      href={`/?tag=${encodeURIComponent(t)}`}
+                      className="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-100 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
+                    >
+                      #{t}
+                    </Link>
+                  ))}
+                </p>
+              ) : null}
               <p className="mt-4 whitespace-pre-wrap break-words text-sm leading-relaxed text-slate-700 dark:text-slate-200">
                 {s.body.length > 180 ? `${s.body.slice(0, 180)}…` : s.body}
               </p>

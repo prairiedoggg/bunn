@@ -1,5 +1,6 @@
 export const env = {
-  // 비워두면 Next rewrites(/api/*)를 통해 같은 오리진으로 프록시됩니다(CORS 회피).
-  apiBaseUrl: process.env.NEXT_PUBLIC_API_BASE_URL ?? "",
+  // 서버(Next RSC/Server Actions)에서는 상대경로 fetch가 깨질 수 있어 절대 URL을 사용합니다.
+  // docker-compose에서는 API_BASE_URL=http://web:3000 로 주입됩니다.
+  serverApiBaseUrl: process.env.API_BASE_URL ?? "http://localhost:3000",
 } as const
 

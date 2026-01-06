@@ -6,6 +6,7 @@ export type Story = {
   pen_name: string | null
   body: string
   critiques_count: number
+  tags: string[]
   created_at: string
 }
 
@@ -18,11 +19,19 @@ export type Critique = {
 }
 
 function apiUrl(path: string) {
-  return env.apiBaseUrl ? `${env.apiBaseUrl}${path}` : path
+  // 서버(RSC)에서는 fetch("/api/...")가 URL 파싱 에러가 나므로 Rails로 직결합니다.
+  if (typeof window === "undefined") return `${env.serverApiBaseUrl}${path}`
+  // 브라우저에서는 Next rewrites(/api/*)를 통해 프록시됩니다.
+  return path
 }
 
-export async function listStories(): Promise<Story[]> {
-  const res = await fetch(apiUrl("/api/stories"), { cache: "no-store" })
+export async function listStories(params?: { q?: string; tag?: string }): Promise<Story[]> {
+  const sp = new URLSearchParams()
+  if (params?.q) sp.set("q", params.q)
+  if (params?.tag) sp.set("tag", params.tag)
+
+  const url = sp.toString() ? `/api/stories?${sp.toString()}` : "/api/stories"
+  const res = await fetch(apiUrl(url), { cache: "no-store" })
   if (!res.ok) throw new Error("stories fetch failed")
   const data = (await res.json()) as { stories: Story[] }
   return data.stories
@@ -32,6 +41,13 @@ export async function getStory(id: string): Promise<{ story: Story; critiques: C
   const res = await fetch(apiUrl(`/api/stories/${id}`), { cache: "no-store" })
   if (!res.ok) throw new Error("story fetch failed")
   return (await res.json()) as { story: Story; critiques: Critique[] }
+}
+
+export async function listTags(): Promise<Array<{ id: number; name: string }>> {
+  const res = await fetch(apiUrl("/api/tags"), { cache: "no-store" })
+  if (!res.ok) throw new Error("tags fetch failed")
+  const data = (await res.json()) as { tags: Array<{ id: number; name: string }> }
+  return data.tags
 }
 
 export async function createStory(input: { title: string; pen_name?: string; body: string }) {

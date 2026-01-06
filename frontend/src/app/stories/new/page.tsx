@@ -1,7 +1,12 @@
 import Link from "next/link"
 import { StoryForm } from "@/components/StoryForm"
+import { redirect } from "next/navigation"
+import { getAuthToken } from "@/lib/auth"
 
-export default function NewStoryPage() {
+export default async function NewStoryPage() {
+  const token = await getAuthToken()
+  if (!token) redirect("/login")
+
   return (
     <section className="mx-auto w-full max-w-3xl space-y-5">
       <div className="flex items-end justify-between gap-3">

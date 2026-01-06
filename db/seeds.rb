@@ -32,3 +32,10 @@ if first && first.critiques.none?
   first.critiques.create!(pen_name: "독자1", body: "첫 문장이 정말 좋았어요. 유리컵에 달빛이 얹혔다는 표현이 선명합니다.")
   first.critiques.create!(pen_name: "", body: "중반부에서 감정이 더 확 올라오면 좋을 것 같아요. 다음 문장이 기대돼요.")
 end
+
+first&.assign_tags(%w[문장 감성 단편])
+first&.save!
+
+second = Story.find_by(title: "문장 사이로 부는 바람")
+second&.assign_tags(%w[미니멀 바람])
+second&.save!

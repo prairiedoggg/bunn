@@ -16,6 +16,12 @@ export function SiteHeader() {
 
         <div className="flex items-center gap-2">
           <Link
+            href="/random"
+            className="hidden sm:inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 shadow-sm hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-200 dark:hover:bg-slate-900"
+          >
+            랜덤
+          </Link>
+          <Link
             href="/stories/new"
             className="inline-flex items-center justify-center rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-slate-800 active:bg-slate-950 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100"
           >

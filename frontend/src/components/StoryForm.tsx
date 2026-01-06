@@ -62,6 +62,19 @@ export function StoryForm() {
         <p className="text-xs text-slate-500 dark:text-slate-400">줄바꿈은 그대로 유지돼요.</p>
       </div>
 
+      <div className="space-y-1.5">
+        <label className="text-sm font-medium text-slate-700 dark:text-slate-200" htmlFor="tags">
+          태그(선택)
+        </label>
+        <input
+          id="tags"
+          name="tags"
+          placeholder="예) 판타지, 성장, 1인칭"
+          className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-slate-900 shadow-sm outline-none placeholder:text-slate-400 focus:border-slate-300 focus:ring-2 focus:ring-slate-200 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100 dark:focus:border-slate-700 dark:focus:ring-slate-800"
+        />
+        <p className="text-xs text-slate-500 dark:text-slate-400">쉼표(,) 또는 공백으로 구분해요. 최대 10개.</p>
+      </div>
+
       <div className="flex items-center justify-end gap-2">
         <button
           type="submit"

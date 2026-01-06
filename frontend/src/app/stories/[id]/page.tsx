@@ -18,6 +18,19 @@ export default async function StoryDetailPage({ params }: Props) {
           <span className="mx-1 text-slate-300 dark:text-slate-700">·</span>
           <span className="text-slate-500 dark:text-slate-400">{new Date(story.created_at).toLocaleString("ko-KR")}</span>
         </p>
+        {story.tags?.length ? (
+          <p className="mt-3 flex flex-wrap gap-2">
+            {story.tags.slice(0, 10).map((t) => (
+              <Link
+                key={t}
+                href={`/?tag=${encodeURIComponent(t)}`}
+                className="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-100 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
+              >
+                #{t}
+              </Link>
+            ))}
+          </p>
+        ) : null}
         <hr className="my-6 border-slate-200 dark:border-slate-800" />
         <div className="whitespace-pre-wrap break-words text-base leading-relaxed text-slate-800 dark:text-slate-200">{story.body}</div>
       </article>

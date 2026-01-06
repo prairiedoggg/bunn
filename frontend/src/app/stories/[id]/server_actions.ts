@@ -2,6 +2,7 @@
 
 import { redirect } from "next/navigation"
 import { revalidatePath } from "next/cache"
+import { cookies } from "next/headers"
 
 type ActionState = { errors: string[] }
 
@@ -13,9 +14,13 @@ export async function createCritiqueAction(_prev: ActionState, formData: FormDat
   if (!storyId) return { errors: ["잘못된 요청이에요."] }
   if (!body.trim()) return { errors: ["합평을 입력해 주세요."] }
 
-  const res = await fetch(`/api/stories/${storyId}/critiques`, {
+  const base = process.env.API_BASE_URL ?? "http://localhost:3000"
+  const token = (await cookies()).get("auth_token")?.value
+  if (!token) return { errors: ["로그인이 필요해요."] }
+
+  const res = await fetch(`${base}/api/stories/${storyId}/critiques`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
     body: JSON.stringify({ critique: { pen_name, body } }),
   })
 
@@ -34,7 +39,14 @@ export async function deleteCritiqueAction(formData: FormData) {
 
   if (!storyId || !critiqueId) return
 
-  await fetch(`/api/stories/${storyId}/critiques/${critiqueId}`, { method: "DELETE" })
+  const base = process.env.API_BASE_URL ?? "http://localhost:3000"
+  const token = (await cookies()).get("auth_token")?.value
+  if (!token) return
+
+  await fetch(`${base}/api/stories/${storyId}/critiques/${critiqueId}`, {
+    method: "DELETE",
+    headers: { Authorization: `Bearer ${token}` },
+  })
   revalidatePath(`/stories/${storyId}`)
   redirect(`/stories/${storyId}`)
 }

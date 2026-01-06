@@ -1,6 +1,7 @@
 module Api
   class CritiquesController < BaseController
     before_action :set_story
+    before_action :authenticate!
 
     def create
       critique = @story.critiques.new(critique_params)

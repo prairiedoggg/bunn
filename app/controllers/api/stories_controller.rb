@@ -1,18 +1,37 @@
 module Api
   class StoriesController < BaseController
+    before_action :authenticate!, only: :create
     def index
-      stories = Story.recent.select(:id, :title, :pen_name, :body, :critiques_count, :created_at)
+      stories = Story
+        .recent
+        .includes(:tags)
+        .search(params[:q])
+
+      if params[:tag].present?
+        tag = params[:tag].to_s.strip.downcase
+        stories = stories.joins(:tags).where(tags: { name: tag }).distinct
+      end
+
+      stories = stories.select(:id, :title, :pen_name, :body, :critiques_count, :created_at)
       render json: { stories: stories.map { |s| story_json(s) } }
     end
 
     def show
-      story = Story.find(params[:id])
+      story = Story.includes(:tags).find(params[:id])
       critiques = story.critiques.recent.select(:id, :pen_name, :body, :created_at)
       render json: { story: story_json(story), critiques: critiques.map { |c| critique_json(c) } }
     end
 
+    def random
+      story = Story.includes(:tags).order(Arel.sql("RANDOM()")).first
+      return render json: { story: nil }, status: :not_found if story.nil?
+
+      render json: { story: story_json(story) }
+    end
+
     def create
       story = Story.new(story_params)
+      story.assign_tags(story_tags)
       if story.save
         render json: { story: story_json(story) }, status: :created
       else
@@ -23,7 +42,17 @@ module Api
     private
 
     def story_params
-      params.require(:story).permit(:title, :pen_name, :body)
+      params.require(:story).permit(:title, :pen_name, :body, tags: [])
+    end
+
+    def story_tags
+      raw = params.dig(:story, :tags)
+      return raw if raw.is_a?(Array)
+
+      str = params.dig(:story, :tags_string).to_s
+      return [] if str.blank?
+
+      str.split(/[,\s]+/)
     end
 
     def story_json(story)
@@ -33,6 +62,7 @@ module Api
         pen_name: story.pen_name,
         body: story.body,
         critiques_count: story.critiques_count,
+        tags: story.tags.map(&:name),
         created_at: story.created_at&.iso8601
       }
     end
