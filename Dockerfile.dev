@@ -9,7 +9,8 @@ RUN apt-get update -qq && \
       curl \
       git \
       libyaml-dev \
-      libsqlite3-dev \
+      libpq-dev \
+      postgresql-client \
       libvips \
       pkg-config && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
