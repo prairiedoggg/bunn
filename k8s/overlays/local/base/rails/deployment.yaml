@@ -32,30 +32,53 @@ spec:
               value: "localhost,127.0.0.1"
             - name: WEB_CONCURRENCY
               value: "1"
-            - name: RABBITMQ_URL
+            - name: RABBITMQ_HOST
               valueFrom:
                 secretKeyRef:
                   name: app-secrets
-                  key: RABBITMQ_URL
+                  key: RABBITMQ_HOST
+            - name: RABBITMQ_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: RABBITMQ_PORT
+            - name: RABBITMQ_USER
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: RABBITMQ_USER
+            - name: RABBITMQ_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: RABBITMQ_PASSWORD
             - name: KAFKA_BROKERS
               value: "redpanda:9092"
-            - name: POSTGRES_USER
+            - name: PGHOST
               valueFrom:
                 secretKeyRef:
                   name: app-secrets
-                  key: POSTGRES_USER
-            - name: POSTGRES_PASSWORD
+                  key: PGHOST
+            - name: PGPORT
               valueFrom:
                 secretKeyRef:
                   name: app-secrets
-                  key: POSTGRES_PASSWORD
-            - name: POSTGRES_DB
+                  key: PGPORT
+            - name: PGUSER
               valueFrom:
                 secretKeyRef:
                   name: app-secrets
-                  key: POSTGRES_DB
-            - name: DATABASE_URL
-              value: "postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@postgres:5432/$(POSTGRES_DB)"
+                  key: PGUSER
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: PGPASSWORD
+            - name: PGDATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: PGDATABASE
             - name: SECRET_KEY_BASE
               valueFrom:
                 secretKeyRef:

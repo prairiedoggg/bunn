@@ -3,8 +3,11 @@ require "bunny"
 
 module Messaging
   class RabbitmqProducer < Producer
-    def initialize(url: Config.rabbitmq_url)
-      @url = url
+    def initialize(host: Config.rabbitmq_host, port: Config.rabbitmq_port, user: Config.rabbitmq_user, password: Config.rabbitmq_password)
+      @host = host
+      @port = port
+      @user = user
+      @password = password
     end
 
     def publish(topic:, payload:, key: nil, headers: {})
@@ -22,7 +25,13 @@ module Messaging
     private
 
     def with_channel
-      conn = Bunny.new(@url, automatically_recover: true)
+      conn = Bunny.new(
+        host: @host,
+        port: @port,
+        username: @user,
+        password: @password,
+        automatically_recover: true
+      )
       conn.start
       ch = conn.create_channel
       yield ch

@@ -3,10 +3,8 @@ services:
     image: postgres:16-alpine
     ports:
       - "5432:5432"
-    environment:
-      POSTGRES_USER: "${POSTGRES_USER:?set in .env}"
-      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:?set in .env}"
-      POSTGRES_DB: "${POSTGRES_DB:-app_development}"
+    env_file:
+      - .env
     volumes:
       - pgdata:/var/lib/postgresql/data
 
@@ -15,9 +13,8 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
-    environment:
-      RABBITMQ_DEFAULT_USER: "${RABBITMQ_USER:?set in .env}"
-      RABBITMQ_DEFAULT_PASS: "${RABBITMQ_PASSWORD:?set in .env}"
+    env_file:
+      - .env
     volumes:
       - rabbitmqdata:/var/lib/rabbitmq
 
@@ -54,24 +51,13 @@ services:
     volumes:
       - .:/app
       - bundle:/usr/local/bundle
+    env_file:
+      - .env
     environment:
       RAILS_ENV: development
       BINDING: "0.0.0.0"
-      JWT_SECRET: "${JWT_SECRET:-}"
       FRONTEND_URL: "http://localhost:3001"
-      DATABASE_URL: "postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-app_development}"
-      RABBITMQ_URL: "amqp://${RABBITMQ_USER}:${RABBITMQ_PASSWORD}@rabbitmq:5672"
       KAFKA_BROKERS: "redpanda:9092"
-
-      # OAuth credentials (set real values in your environment)
-      GOOGLE_CLIENT_ID: "${GOOGLE_CLIENT_ID:-}"
-      GOOGLE_CLIENT_SECRET: "${GOOGLE_CLIENT_SECRET:-}"
-      APPLE_CLIENT_ID: "${APPLE_CLIENT_ID:-}"
-      APPLE_CLIENT_SECRET: "${APPLE_CLIENT_SECRET:-}"
-      NAVER_CLIENT_ID: "${NAVER_CLIENT_ID:-}"
-      NAVER_CLIENT_SECRET: "${NAVER_CLIENT_SECRET:-}"
-      KAKAO_CLIENT_ID: "${KAKAO_CLIENT_ID:-}"
-      KAKAO_CLIENT_SECRET: "${KAKAO_CLIENT_SECRET:-}"
     command: bin/dev
     depends_on:
       - db

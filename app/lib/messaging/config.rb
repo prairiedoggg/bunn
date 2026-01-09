@@ -6,8 +6,20 @@ module Messaging
       (ENV["MESSAGE_BACKEND"] || "rabbitmq").strip.downcase
     end
 
-    def rabbitmq_url
-      ENV.fetch("RABBITMQ_URL", "amqp://guest:guest@localhost:5672")
+    def rabbitmq_host
+      ENV.fetch("RABBITMQ_HOST", "localhost")
+    end
+
+    def rabbitmq_port
+      Integer(ENV.fetch("RABBITMQ_PORT", "5672"))
+    end
+
+    def rabbitmq_user
+      ENV.fetch("RABBITMQ_USER")
+    end
+
+    def rabbitmq_password
+      ENV.fetch("RABBITMQ_PASSWORD")
     end
 
     def kafka_brokers

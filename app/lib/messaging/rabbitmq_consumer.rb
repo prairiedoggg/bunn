@@ -10,7 +10,10 @@ module Messaging
     def initialize(queue_name:, binding_key:)
       @queue_name = queue_name
       @binding_key = binding_key
-      @url = Config.rabbitmq_url
+      @host = Config.rabbitmq_host
+      @port = Config.rabbitmq_port
+      @user = Config.rabbitmq_user
+      @password = Config.rabbitmq_password
     end
 
     def run!
@@ -18,7 +21,13 @@ module Messaging
       puts "[RabbitMQ] consumer starting queue=#{@queue_name} binding=#{@binding_key}"
       Rails.logger.info("[RabbitMQ] consumer starting queue=#{@queue_name} binding=#{@binding_key}")
 
-      conn = Bunny.new(@url, automatically_recover: true)
+      conn = Bunny.new(
+        host: @host,
+        port: @port,
+        username: @user,
+        password: @password,
+        automatically_recover: true
+      )
       conn.start
       ch = conn.create_channel
       ch.prefetch(10)
