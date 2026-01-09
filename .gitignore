@@ -1,0 +1,8 @@
+# Local secrets (never commit)
+k8s/**/secrets*.yaml
+k8s/**/repo-*.yaml
+.env*
+
+# Cursor / editor
+.cursor/
+

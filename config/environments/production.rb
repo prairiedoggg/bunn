@@ -96,7 +96,13 @@ Rails.application.configure do
   # Skip DNS rebinding protection for the default health check endpoint.
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
 
-  if (allowed_hosts = ENV["RAILS_ALLOWED_HOSTS"]).present?
-    config.hosts.concat allowed_hosts.split(",").map(&:strip)
+  # 로컬 K8s(kind) 등에서 kubelet probe가 Pod IP로 접근할 때 HostAuthorization이 403을 내는 경우가 있습니다.
+  # 이 경우에만 명시적으로 비활성화합니다(프로덕션에서는 사용 금지).
+  if ENV["RAILS_DISABLE_HOST_AUTHORIZATION"].present?
+    config.hosts.clear
+  else
+    if (allowed_hosts = ENV["RAILS_ALLOWED_HOSTS"]).present?
+      config.hosts.concat allowed_hosts.split(",").map(&:strip)
+    end
   end
 end

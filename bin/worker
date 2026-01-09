@@ -1,0 +1,7 @@
+#!/bin/sh
+set -eu
+
+export RAILS_ENV="${RAILS_ENV:-production}"
+
+exec ./bin/rails runner "Messaging::RabbitmqConsumer.run!"
+

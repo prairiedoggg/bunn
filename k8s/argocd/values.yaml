@@ -1,0 +1,17 @@
+## Argo CD (Helm) values - local(kind) 최소 설정
+## 설치: helm upgrade --install argocd argo/argo-cd -n argocd --create-namespace -f k8s/argocd/values.yaml
+
+global:
+  # kind 로컬에서는 리소스를 과하게 잡지 않습니다.
+  logging:
+    format: text
+
+server:
+  service:
+    type: ClusterIP
+
+configs:
+  params:
+    # (포트포워딩 기준) HTTPS(기본)를 그대로 사용합니다.
+    server.insecure: false
+

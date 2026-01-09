@@ -1,0 +1,27 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: bunn
+
+resources:
+  - base/namespace.yaml
+  - base/postgres/service.yaml
+  - base/postgres/statefulset.yaml
+  - base/rabbitmq/service.yaml
+  - base/rabbitmq/statefulset.yaml
+  - base/redpanda/service.yaml
+  - base/redpanda/deployment.yaml
+  - base/rails/service.yaml
+  - base/rails/deployment.yaml
+  - base/worker/deployment.yaml
+
+patches:
+  # local에선 호스트 접근을 위해 NodePort로 노출(포워딩 없이도 확인 가능)
+  - target:
+      kind: Service
+      name: rails-web
+    patch: |-
+      - op: replace
+        path: /spec/type
+        value: NodePort
+

@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redpanda
+  namespace: bunn
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redpanda
+  template:
+    metadata:
+      labels:
+        app: redpanda
+    spec:
+      containers:
+        - name: redpanda
+          image: docker.redpanda.com/redpandadata/redpanda:v24.3.7
+          ports:
+            - name: kafka
+              containerPort: 9092
+            - name: admin
+              containerPort: 9644
+          args:
+            - redpanda
+            - start
+            - --overprovisioned
+            - --smp
+            - "1"
+            - --memory
+            - "512M"
+            - --reserve-memory
+            - "0M"
+            - --node-id
+            - "0"
+            - --check=false
+            - --kafka-addr
+            - "PLAINTEXT://0.0.0.0:9092"
+            - --advertise-kafka-addr
+            - "PLAINTEXT://redpanda:9092"
+          readinessProbe:
+            httpGet:
+              path: /v1/status/ready
+              port: admin
+            initialDelaySeconds: 10
+            periodSeconds: 5
+

@@ -4,9 +4,9 @@ services:
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: app_development
+      POSTGRES_USER: "${POSTGRES_USER:?set in .env}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:?set in .env}"
+      POSTGRES_DB: "${POSTGRES_DB:-app_development}"
     volumes:
       - pgdata:/var/lib/postgresql/data
 
@@ -16,8 +16,8 @@ services:
       - "5672:5672"
       - "15672:15672"
     environment:
-      RABBITMQ_DEFAULT_USER: guest
-      RABBITMQ_DEFAULT_PASS: guest
+      RABBITMQ_DEFAULT_USER: "${RABBITMQ_USER:?set in .env}"
+      RABBITMQ_DEFAULT_PASS: "${RABBITMQ_PASSWORD:?set in .env}"
     volumes:
       - rabbitmqdata:/var/lib/rabbitmq
 
@@ -57,10 +57,10 @@ services:
     environment:
       RAILS_ENV: development
       BINDING: "0.0.0.0"
-      JWT_SECRET: "dev-jwt-secret-change-me"
+      JWT_SECRET: "${JWT_SECRET:-}"
       FRONTEND_URL: "http://localhost:3001"
-      DATABASE_URL: "postgres://postgres:postgres@db:5432/app_development"
-      RABBITMQ_URL: "amqp://guest:guest@rabbitmq:5672"
+      DATABASE_URL: "postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-app_development}"
+      RABBITMQ_URL: "amqp://${RABBITMQ_USER}:${RABBITMQ_PASSWORD}@rabbitmq:5672"
       KAFKA_BROKERS: "redpanda:9092"
 
       # OAuth credentials (set real values in your environment)
