@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { ActivityIndicator, Alert, Pressable, ScrollView, Text, TextInput, View } from "react-native"
+import { ActivityIndicator, Alert, Pressable, ScrollView, Switch, Text, TextInput, View } from "react-native"
 import { createCritique, getStory } from "@/lib/api"
 import { useRoute } from "@react-navigation/native"
 
@@ -12,6 +12,7 @@ export function StoryDetailScreen() {
   const [critiques, setCritiques] = useState<any[]>([])
   const [penName, setPenName] = useState("")
   const [body, setBody] = useState("")
+  const [isPublic, setIsPublic] = useState(true)
 
   const refresh = async () => {
     setLoading(true)
@@ -63,12 +64,17 @@ export function StoryDetailScreen() {
             multiline
             style={{ borderWidth: 1, borderColor: "#e2e8f0", borderRadius: 12, paddingHorizontal: 12, paddingVertical: 10, minHeight: 100, backgroundColor: "white" }}
           />
+          <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingVertical: 4 }}>
+            <Text style={{ fontWeight: "800", color: "#0f172a" }}>공개 합평</Text>
+            <Switch value={isPublic} onValueChange={setIsPublic} />
+          </View>
           <Pressable
             onPress={async () => {
               try {
-                await createCritique(story.id, { pen_name: penName, body })
+                await createCritique(story.id, { pen_name: penName, body, is_public: isPublic })
                 setPenName("")
                 setBody("")
+                setIsPublic(true)
                 await refresh()
               } catch (e: any) {
                 Alert.alert("합평 등록 실패", e?.message ?? "로그인이 필요할 수 있어요.")
@@ -86,10 +92,10 @@ export function StoryDetailScreen() {
         {critiques.map((c) => (
           <View key={c.id} style={{ borderWidth: 1, borderColor: "#e2e8f0", backgroundColor: "white", borderRadius: 18, padding: 14 }}>
             <Text style={{ fontWeight: "800" }}>
-              {c.pen_name?.trim() ? c.pen_name : "익명"}{" "}
+              {c.pen_name?.trim() ? c.pen_name : c.is_public === false ? "비공개" : "익명"}{" "}
               <Text style={{ fontWeight: "600", color: "#64748b", fontSize: 12 }}>{new Date(c.created_at).toLocaleString("ko-KR")}</Text>
             </Text>
-            <Text style={{ marginTop: 8, color: "#0f172a", lineHeight: 20 }}>{c.body}</Text>
+            <Text style={{ marginTop: 8, color: "#0f172a", lineHeight: 20 }}>{c.body ?? "비공개 합평입니다."}</Text>
           </View>
         ))}
       </View>

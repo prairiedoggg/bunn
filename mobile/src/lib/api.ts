@@ -14,7 +14,9 @@ export type Story = {
 export type Critique = {
   id: number
   pen_name: string | null
-  body: string
+  body: string | null
+  is_public?: boolean
+  mine?: boolean
   created_at: string
 }
 
@@ -85,7 +87,7 @@ export async function createStory(input: { title: string; pen_name?: string; bod
   return data.story
 }
 
-export async function createCritique(storyId: number, input: { pen_name?: string; body: string }) {
+export async function createCritique(storyId: number, input: { pen_name?: string; body: string; is_public?: boolean }) {
   const res = await request(`/api/stories/${storyId}/critiques`, { method: "POST", body: JSON.stringify({ critique: input }) }, true)
   const data = (await res.json().catch(() => null)) as { critique?: Critique; errors?: string[] } | null
   if (!res.ok || !data?.critique) throw new Error(data?.errors?.[0] ?? "create critique failed")

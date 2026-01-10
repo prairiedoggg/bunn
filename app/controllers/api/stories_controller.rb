@@ -18,8 +18,9 @@ module Api
 
     def show
       story = Story.includes(:tags).find(params[:id])
-      critiques = story.critiques.recent.select(:id, :pen_name, :body, :created_at)
-      render json: { story: story_json(story), critiques: critiques.map { |c| critique_json(c) } }
+      viewer = current_user
+      critiques = story.critiques.recent.select(:id, :user_id, :pen_name, :body, :is_public, :created_at)
+      render json: { story: story_json(story), critiques: critiques.map { |c| critique_json(c, viewer) } }
     end
 
     def random
@@ -67,11 +68,16 @@ module Api
       }
     end
 
-    def critique_json(critique)
+    def critique_json(critique, viewer)
+      mine = critique.user_id.present? && viewer&.id == critique.user_id
+      can_view_body = critique.is_public || mine
+
       {
         id: critique.id,
-        pen_name: critique.pen_name,
-        body: critique.body,
+        pen_name: can_view_body ? critique.pen_name : nil,
+        body: can_view_body ? critique.body : nil,
+        is_public: critique.is_public,
+        mine: mine,
         created_at: critique.created_at&.iso8601
       }
     end

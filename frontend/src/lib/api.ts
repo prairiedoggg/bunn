@@ -14,7 +14,9 @@ export type Critique = {
   id: number
   story_id?: number
   pen_name: string | null
-  body: string
+  body: string | null
+  is_public?: boolean
+  mine?: boolean
   created_at: string
 }
 

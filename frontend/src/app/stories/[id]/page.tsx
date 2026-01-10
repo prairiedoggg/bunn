@@ -60,7 +60,7 @@ export default async function StoryDetailPage({ params }: Props) {
                 <article key={c.id} className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-950">
                   <div className="flex items-start justify-between gap-3">
                     <p className="text-sm font-semibold">
-                      {c.pen_name?.trim() ? c.pen_name : "익명"}
+                      {c.pen_name?.trim() ? c.pen_name : c.is_public === false ? "비공개" : "익명"}
                       <span className="ml-2 text-xs font-medium text-slate-500 dark:text-slate-400">
                         {new Date(c.created_at).toLocaleString("ko-KR")}
                       </span>
@@ -76,7 +76,9 @@ export default async function StoryDetailPage({ params }: Props) {
                       </button>
                     </form>
                   </div>
-                  <div className="mt-3 whitespace-pre-wrap break-words text-sm leading-relaxed text-slate-800 dark:text-slate-200">{c.body}</div>
+                  <div className="mt-3 whitespace-pre-wrap break-words text-sm leading-relaxed text-slate-800 dark:text-slate-200">
+                    {c.body ?? "비공개 합평입니다."}
+                  </div>
                 </article>
               ))
             )}

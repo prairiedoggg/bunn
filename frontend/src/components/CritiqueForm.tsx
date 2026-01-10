@@ -53,7 +53,17 @@ export function CritiqueForm({ storyId }: { storyId: number }) {
         />
       </div>
 
-      <div className="flex items-center justify-end gap-2">
+      <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+        <label className="inline-flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-200">
+          <input
+            type="checkbox"
+            name="is_public"
+            defaultChecked
+            className="h-4 w-4 rounded border-slate-300 text-slate-900 focus:ring-slate-200 dark:border-slate-700 dark:bg-slate-950 dark:text-white dark:focus:ring-slate-800"
+          />
+          공개 합평
+          <span className="text-xs font-medium text-slate-500 dark:text-slate-400">(끄면 비공개)</span>
+        </label>
         <button
           type="submit"
           disabled={pending}

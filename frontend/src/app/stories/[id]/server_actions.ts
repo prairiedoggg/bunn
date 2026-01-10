@@ -10,6 +10,7 @@ export async function createCritiqueAction(_prev: ActionState, formData: FormDat
   const storyId = String(formData.get("storyId") ?? "")
   const pen_name = String(formData.get("pen_name") ?? "")
   const body = String(formData.get("body") ?? "")
+  const is_public = String(formData.get("is_public") ?? "") === "on"
 
   if (!storyId) return { errors: ["잘못된 요청이에요."] }
   if (!body.trim()) return { errors: ["합평을 입력해 주세요."] }
@@ -21,7 +22,7 @@ export async function createCritiqueAction(_prev: ActionState, formData: FormDat
   const res = await fetch(`${base}/api/stories/${storyId}/critiques`, {
     method: "POST",
     headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-    body: JSON.stringify({ critique: { pen_name, body } }),
+    body: JSON.stringify({ critique: { pen_name, body, is_public } }),
   })
 
   if (!res.ok) {
