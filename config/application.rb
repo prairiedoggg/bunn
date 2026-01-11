@@ -25,5 +25,8 @@ module App
     config.time_zone = "Asia/Seoul"
     config.i18n.default_locale = :ko
     # config.eager_load_paths << Rails.root.join("extras")
+
+    # HTTP flood(간단 DoS) 완화
+    config.middleware.use Rack::Attack
   end
 end
