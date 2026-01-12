@@ -1,5 +1,6 @@
 class CritiquesController < ApplicationController
   before_action :set_story
+  before_action :require_admin!, only: %i[create destroy]
 
   def create
     @critique = @story.critiques.new(critique_params)

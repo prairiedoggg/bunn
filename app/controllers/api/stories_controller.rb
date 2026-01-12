@@ -19,8 +19,14 @@ module Api
     def show
       story = Story.includes(:tags).find(params[:id])
       viewer = current_user
-      critiques = story.critiques.recent.select(:id, :user_id, :pen_name, :body, :is_public, :created_at)
-      render json: { story: story_json(story), critiques: critiques.map { |c| critique_json(c, viewer) } }
+      critiques = story.critiques.recent
+      critiques = critiques.where(is_public: true) unless viewer
+      critiques = critiques.where("is_public = TRUE OR user_id = ?", viewer.id) if viewer
+      critiques = critiques.select(:id, :user_id, :pen_name, :body, :is_public, :created_at)
+
+      # show 응답에서는 "보이는" 합평 개수를 사용해 클라이언트 표시와 일치시킵니다.
+      story_payload = story_json(story).merge(critiques_count: critiques.size)
+      render json: { story: story_payload, critiques: critiques.map { |c| critique_json(c, viewer) } }
     end
 
     def random

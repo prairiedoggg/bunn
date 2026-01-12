@@ -6,3 +6,27 @@ k8s/**/repo-*.yaml
 # Cursor / editor
 .cursor/
 
+# macOS
+.DS_Store
+**/.DS_Store
+
+# Rails (standard)
+/log/*
+!/log/.keep
+/tmp/*
+!/tmp/.keep
+/tmp/pids/*
+!/tmp/pids/.keep
+
+/storage/*
+!/storage/.keep
+/tmp/storage/*
+!/tmp/storage/.keep
+
+/public/assets
+/node_modules/
+
+# Rails asset builds (generated)
+/app/assets/builds/*
+!/app/assets/builds/.keep
+

@@ -15,7 +15,7 @@ module Api
 
     def destroy
       critique = @story.critiques.find(params[:id])
-      if critique.user_id.present? && critique.user_id != current_user&.id
+      if critique.user_id != current_user&.id
         return render json: { error: "권한이 없어요." }, status: :forbidden
       end
       critique.destroy

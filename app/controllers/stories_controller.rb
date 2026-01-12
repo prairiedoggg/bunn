@@ -1,5 +1,6 @@
 class StoriesController < ApplicationController
   before_action :set_story, only: %i[ show edit update destroy ]
+  before_action :require_admin!, only: %i[new create edit update destroy]
 
   # GET /stories
   def index
@@ -8,7 +9,9 @@ class StoriesController < ApplicationController
 
   # GET /stories/1
   def show
-    @critiques = @story.critiques.recent
+    # HTML 화면에서는 비공개 합평을 노출하지 않습니다.
+    @critiques = @story.critiques.where(is_public: true).recent
+    @public_critiques_count = @critiques.size
     @critique = @story.critiques.new
   end
 

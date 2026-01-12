@@ -7,7 +7,7 @@
 > Docker Desktop이 켜져 있어야 `kind` 클러스터를 만들 수 있습니다.
 
 ```bash
-kind create cluster --name bunn
+./bin/k8s/bootstrap_local.sh
 export POSTGRES_USER=bunn
 export POSTGRES_PASSWORD="$(ruby -e 'require \"securerandom\"; puts SecureRandom.hex(24)')"
 export POSTGRES_DB=app_development
