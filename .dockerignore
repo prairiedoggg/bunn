@@ -3,6 +3,13 @@
 # Ignore git directory.
 /.git/
 
+# Ignore k8s manifests (not needed in image)
+/k8s/
+
+# Ignore separate clients (not needed in image)
+/frontend/
+/mobile/
+
 # Ignore bundler config.
 /.bundle
 
@@ -35,3 +42,7 @@
 /app/assets/builds/*
 !/app/assets/builds/.keep
 /public/assets
+
+# Ignore local env examples
+/.env
+/env.example

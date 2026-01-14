@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: worker
-          image: bunn-rails:local-3
+          image: bunn-rails:local-4
           imagePullPolicy: IfNotPresent
           # exec를 써서 PID 1이 rails runner가 되게(로그/시그널 처리가 깔끔)
           command: ["sh", "-lc", "exec ./bin/rails runner \"Messaging::RabbitmqConsumer.run!\""]
