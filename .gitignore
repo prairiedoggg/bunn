@@ -3,6 +3,8 @@ k8s/**/secrets*.yaml
 k8s/**/repo-*.yaml
 .env*
 config/master.key
+config/credentials.yml.enc
+config/credentials/*.yml.enc
 config/credentials/*.key
 
 # Cursor / editor
