@@ -34,3 +34,11 @@ config/credentials/*.key
 /app/assets/builds/*
 !/app/assets/builds/.keep
 
+# Next.js / Expo build outputs (generated)
+/frontend/.next/
+/frontend/out/
+/frontend/.turbo/
+/mobile/.expo/
+/mobile/.expo-shared/
+/mobile/dist/
+

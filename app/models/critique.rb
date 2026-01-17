@@ -9,6 +9,13 @@ class Critique < ApplicationRecord
   validate :private_requires_user
 
   scope :recent, -> { order(created_at: :desc) }
+  scope :visible_to, ->(viewer) {
+    if viewer
+      where(is_public: true).or(where(user_id: viewer.id))
+    else
+      where(is_public: true)
+    end
+  }
 
   def public?
     is_public

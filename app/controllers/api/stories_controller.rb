@@ -13,34 +13,35 @@ module Api
       end
 
       stories = stories.select(:id, :title, :pen_name, :body, :critiques_count, :created_at)
-      render json: { stories: stories.map { |s| story_json(s) } }
+      render json: { stories: stories.map { |s| Api::StorySerializer.call(s) } }
     end
 
     def show
       story = Story.includes(:tags).find(params[:id])
       viewer = current_user
-      critiques = story.critiques.recent
-      critiques = critiques.where(is_public: true) unless viewer
-      critiques = critiques.where("is_public = TRUE OR user_id = ?", viewer.id) if viewer
-      critiques = critiques.select(:id, :user_id, :pen_name, :body, :is_public, :created_at)
+      critiques = story.critiques
+        .recent
+        .visible_to(viewer)
+        .select(:id, :story_id, :user_id, :pen_name, :body, :is_public, :created_at)
 
       # show 응답에서는 "보이는" 합평 개수를 사용해 클라이언트 표시와 일치시킵니다.
-      story_payload = story_json(story).merge(critiques_count: critiques.size)
-      render json: { story: story_payload, critiques: critiques.map { |c| critique_json(c, viewer) } }
+      visible_critiques = critiques.to_a
+      story_payload = Api::StorySerializer.call(story, critiques_count: visible_critiques.length)
+      render json: { story: story_payload, critiques: visible_critiques.map { |c| Api::CritiqueSerializer.call(c, viewer: viewer) } }
     end
 
     def random
       story = Story.includes(:tags).order(Arel.sql("RANDOM()")).first
       return render json: { story: nil }, status: :not_found if story.nil?
 
-      render json: { story: story_json(story) }
+      render json: { story: Api::StorySerializer.call(story) }
     end
 
     def create
       story = Story.new(story_params)
       story.assign_tags(story_tags)
       if story.save
-        render json: { story: story_json(story) }, status: :created
+        render json: { story: Api::StorySerializer.call(story) }, status: :created
       else
         render json: { errors: story.errors.full_messages }, status: :unprocessable_entity
       end
@@ -60,32 +61,6 @@ module Api
       return [] if str.blank?
 
       str.split(/[,\s]+/)
-    end
-
-    def story_json(story)
-      {
-        id: story.id,
-        title: story.title,
-        pen_name: story.pen_name,
-        body: story.body,
-        critiques_count: story.critiques_count,
-        tags: story.tags.map(&:name),
-        created_at: story.created_at&.iso8601
-      }
-    end
-
-    def critique_json(critique, viewer)
-      mine = critique.user_id.present? && viewer&.id == critique.user_id
-      can_view_body = critique.is_public || mine
-
-      {
-        id: critique.id,
-        pen_name: can_view_body ? critique.pen_name : nil,
-        body: can_view_body ? critique.body : nil,
-        is_public: critique.is_public,
-        mine: mine,
-        created_at: critique.created_at&.iso8601
-      }
     end
   end
 end
