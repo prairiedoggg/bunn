@@ -30,7 +30,7 @@ export function StoryDetailScreen() {
   }, [id])
 
   if (loading) return <ActivityIndicator style={{ marginTop: 24 }} />
-  if (!story) return <Text style={{ padding: 16 }}>존재하지 않는 글이에요.</Text>
+  if (!story) return <Text style={{ padding: 16 }}>찾는 글이 보이지 않아요.</Text>
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor: "#f8fafc" }} contentContainerStyle={{ padding: 16, gap: 12 }}>
@@ -60,7 +60,7 @@ export function StoryDetailScreen() {
           <TextInput
             value={body}
             onChangeText={setBody}
-            placeholder="합평을 남겨주세요"
+            placeholder="좋았던 문장, 아쉬웠던 숨결, 다음에 기대되는 장면을 남겨주세요"
             multiline
             style={{ borderWidth: 1, borderColor: "#e2e8f0", borderRadius: 12, paddingHorizontal: 12, paddingVertical: 10, minHeight: 100, backgroundColor: "white" }}
           />
@@ -77,7 +77,7 @@ export function StoryDetailScreen() {
                 setIsPublic(true)
                 await refresh()
               } catch (e: any) {
-                Alert.alert("합평 등록 실패", e?.message ?? "로그인이 필요할 수 있어요.")
+                Alert.alert("합평을 남기지 못했어요", e?.message ?? "로그인이 필요할 수 있어요.")
               }
             }}
             style={{ alignSelf: "flex-end", paddingHorizontal: 14, paddingVertical: 10, borderRadius: 12, backgroundColor: "#0f172a" }}
@@ -88,14 +88,14 @@ export function StoryDetailScreen() {
       </View>
 
       <View style={{ gap: 10 }}>
-        {critiques.length === 0 ? <Text style={{ color: "#475569" }}>아직 합평이 없어요.</Text> : null}
+        {critiques.length === 0 ? <Text style={{ color: "#475569" }}>아직 이 글엔 답장이 없어요.</Text> : null}
         {critiques.map((c) => (
           <View key={c.id} style={{ borderWidth: 1, borderColor: "#e2e8f0", backgroundColor: "white", borderRadius: 18, padding: 14 }}>
             <Text style={{ fontWeight: "800" }}>
               {c.pen_name?.trim() ? c.pen_name : c.is_public === false ? "비공개" : "익명"}{" "}
               <Text style={{ fontWeight: "600", color: "#64748b", fontSize: 12 }}>{new Date(c.created_at).toLocaleString("ko-KR")}</Text>
             </Text>
-            <Text style={{ marginTop: 8, color: "#0f172a", lineHeight: 20 }}>{c.body ?? "비공개 합평입니다."}</Text>
+            <Text style={{ marginTop: 8, color: "#0f172a", lineHeight: 20 }}>{c.body ?? "비공개로 남겨진 합평입니다."}</Text>
           </View>
         ))}
       </View>

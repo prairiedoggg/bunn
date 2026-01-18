@@ -16,15 +16,15 @@ export default async function Home({ searchParams }: Props) {
     <section className="space-y-6">
       <div>
         <h1 className="text-2xl font-black tracking-tight">문(文)</h1>
-        <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">짧은 소설을 올리고, 정직한 합평을 나누는 곳.</p>
+        <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">짧은 이야기들을 올리고, 다정하고 솔직한 합평을 나누는 서재.</p>
       </div>
 
       <StoryFilters tags={tags} current={{ q, tag }} />
 
       {stories.length === 0 ? (
         <div className="rounded-3xl border border-dashed border-slate-300 bg-white p-10 text-center dark:border-slate-700 dark:bg-slate-950">
-          <p className="text-sm font-medium text-slate-700 dark:text-slate-200">아직 올라온 소설이 없어요.</p>
-          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">첫 번째 글을 올려볼까요?</p>
+          <p className="text-sm font-medium text-slate-700 dark:text-slate-200">아직 이 서재엔 첫 문장이 없어요.</p>
+          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">오늘의 첫 문장을 남겨볼까요?</p>
         </div>
       ) : (
         <div className="grid gap-4 md:grid-cols-2">
@@ -61,10 +61,10 @@ export default async function Home({ searchParams }: Props) {
                   href={`/stories/${s.id}`}
                   className="inline-flex items-center justify-center rounded-xl bg-slate-900 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-slate-800 active:bg-slate-950 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100"
                 >
-                  읽기
+                  펼치기
                 </Link>
                 <span className="rounded-2xl border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-semibold text-slate-700 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200">
-                  합평 <span className="tabular-nums">{s.critiques_count}</span>
+                  합평 <span className="tabular-nums">{s.critiques_count}</span>개
                 </span>
               </div>
             </article>

@@ -13,7 +13,7 @@ export function StoryForm() {
     <form action={action} className="space-y-5">
       {state.errors.length > 0 ? (
         <div className="rounded-2xl border border-rose-200 bg-rose-50 p-4 text-sm text-rose-900 shadow-sm dark:border-rose-900/40 dark:bg-rose-950/40 dark:text-rose-100">
-          <p className="font-medium">입력값을 다시 확인해 주세요.</p>
+          <p className="font-medium">잠깐, 문장을 한 번 더 다듬어 볼까요?</p>
           <ul className="mt-2 list-disc pl-5">
             {state.errors.map((m) => (
               <li key={m}>{m}</li>
@@ -56,10 +56,10 @@ export function StoryForm() {
           id="body"
           name="body"
           rows={16}
-          placeholder="여기에 단편소설을 작성해 주세요."
+          placeholder="여기에 이야기를 조용히 풀어놓아 주세요."
           className="w-full rounded-2xl border border-slate-200 bg-white px-3 py-3 text-slate-900 shadow-sm outline-none placeholder:text-slate-400 focus:border-slate-300 focus:ring-2 focus:ring-slate-200 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100 dark:focus:border-slate-700 dark:focus:ring-slate-800"
         />
-        <p className="text-xs text-slate-500 dark:text-slate-400">줄바꿈은 그대로 유지돼요.</p>
+        <p className="text-xs text-slate-500 dark:text-slate-400">줄바꿈은 그대로, 리듬도 그대로.</p>
       </div>
 
       <div className="space-y-1.5">
@@ -81,7 +81,7 @@ export function StoryForm() {
           disabled={pending}
           className="inline-flex items-center justify-center rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-slate-800 disabled:opacity-60 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100"
         >
-          {pending ? "등록 중..." : "등록"}
+          {pending ? "올리는 중..." : "올리기"}
         </button>
       </div>
     </form>

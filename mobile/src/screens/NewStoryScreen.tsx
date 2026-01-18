@@ -14,13 +14,13 @@ export function NewStoryScreen() {
 
   return (
     <View style={{ flex: 1, backgroundColor: "#f8fafc", padding: 16, gap: 12 }}>
-      <Text style={{ fontSize: 20, fontWeight: "900" }}>새 소설</Text>
+      <Text style={{ fontSize: 20, fontWeight: "900" }}>새 이야기</Text>
 
       <View style={{ gap: 10, padding: 14, borderRadius: 18, borderWidth: 1, borderColor: "#e2e8f0", backgroundColor: "white" }}>
         <TextInput
           value={title}
           onChangeText={setTitle}
-          placeholder="제목"
+          placeholder="제목 (한 줄)"
           style={{ borderWidth: 1, borderColor: "#e2e8f0", borderRadius: 12, paddingHorizontal: 12, paddingVertical: 10 }}
         />
         <TextInput
@@ -38,7 +38,7 @@ export function NewStoryScreen() {
         <TextInput
           value={body}
           onChangeText={setBody}
-          placeholder="본문"
+          placeholder="여기에 이야기를 조용히 풀어놓아 주세요."
           multiline
           style={{ borderWidth: 1, borderColor: "#e2e8f0", borderRadius: 12, paddingHorizontal: 12, paddingVertical: 10, minHeight: 160 }}
         />
@@ -48,7 +48,7 @@ export function NewStoryScreen() {
           onPress={async () => {
             const token = await getToken()
             if (!token) {
-              Alert.alert("로그인 필요", "로그인 후 글을 쓸 수 있어요.")
+              Alert.alert("잠깐만요", "로그인 후에 글을 남길 수 있어요.")
               nav.navigate("Login")
               return
             }
@@ -60,7 +60,7 @@ export function NewStoryScreen() {
                 .filter(Boolean)
                 .slice(0, 10)
               const s = await createStory({ title, pen_name: penName, body, tags: tagList })
-              Alert.alert("완료", "소설이 등록됐어요.")
+              Alert.alert("완료", "이야기를 올렸어요.")
               nav.replace("StoryDetail", { id: s.id })
             } catch (e: any) {
               Alert.alert("등록 실패", e?.message ?? "다시 시도해 주세요.")
@@ -70,7 +70,7 @@ export function NewStoryScreen() {
           }}
           style={{ padding: 14, borderRadius: 14, backgroundColor: "#0f172a" }}
         >
-          <Text style={{ color: "white", fontWeight: "800", textAlign: "center" }}>{loading ? "등록 중..." : "등록"}</Text>
+          <Text style={{ color: "white", fontWeight: "800", textAlign: "center" }}>{loading ? "올리는 중..." : "올리기"}</Text>
         </Pressable>
       </View>
     </View>

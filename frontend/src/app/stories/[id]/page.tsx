@@ -42,7 +42,7 @@ export default async function StoryDetailPage({ params }: Props) {
               합평 (<span className="tabular-nums">{story.critiques_count}</span>)
             </h2>
             <Link href="/" className="text-sm font-semibold text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-slate-100">
-              목록
+              돌아가기
             </Link>
           </div>
 
@@ -54,7 +54,7 @@ export default async function StoryDetailPage({ params }: Props) {
         <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-950">
           <div className="space-y-3">
             {critiques.length === 0 ? (
-              <p className="text-sm text-slate-600 dark:text-slate-300">아직 합평이 없어요. 첫 합평을 남겨주세요.</p>
+              <p className="text-sm text-slate-600 dark:text-slate-300">아직 이 글엔 답장이 없어요. 첫 합평을 남겨주세요.</p>
             ) : (
               critiques.map((c) => (
                 <article key={c.id} className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-950">
@@ -72,12 +72,12 @@ export default async function StoryDetailPage({ params }: Props) {
                         type="submit"
                         className="shrink-0 rounded-lg border border-slate-200 bg-white px-2 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-200 dark:hover:bg-slate-900"
                       >
-                        삭제
+                        지우기
                       </button>
                     </form>
                   </div>
                   <div className="mt-3 whitespace-pre-wrap break-words text-sm leading-relaxed text-slate-800 dark:text-slate-200">
-                    {c.body ?? "비공개 합평입니다."}
+                    {c.body ?? "비공개로 남겨진 합평입니다."}
                   </div>
                 </article>
               ))

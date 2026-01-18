@@ -23,7 +23,7 @@ export function StoriesScreen() {
             }}
             style={{ paddingHorizontal: 12, paddingVertical: 8, borderRadius: 12, borderWidth: 1, borderColor: "#e2e8f0" }}
           >
-            <Text style={{ fontWeight: "700" }}>랜덤</Text>
+            <Text style={{ fontWeight: "700" }}>한 편 뽑기</Text>
           </Pressable>
         </View>
 
@@ -31,7 +31,7 @@ export function StoriesScreen() {
           <TextInput
             value={q}
             onChangeText={setQ}
-            placeholder="제목/본문 검색"
+            placeholder="문장 찾기"
             style={{
               flex: 1,
               paddingHorizontal: 12,
@@ -51,7 +51,7 @@ export function StoriesScreen() {
             }}
             style={{ paddingHorizontal: 14, justifyContent: "center", borderRadius: 12, backgroundColor: "#0f172a" }}
           >
-            <Text style={{ color: "white", fontWeight: "700" }}>검색</Text>
+            <Text style={{ color: "white", fontWeight: "700" }}>찾기</Text>
           </Pressable>
         </View>
 
@@ -73,7 +73,7 @@ export function StoriesScreen() {
               borderColor: activeTag === "" ? "#0f172a" : "#e2e8f0",
             }}
           >
-            <Text style={{ color: activeTag === "" ? "white" : "#0f172a", fontWeight: "700", fontSize: 12 }}>전체</Text>
+            <Text style={{ color: activeTag === "" ? "white" : "#0f172a", fontWeight: "700", fontSize: 12 }}>모두</Text>
           </Pressable>
           {tags.map((t) => {
             const active = activeTag === t.name
@@ -153,7 +153,7 @@ export function StoriesScreen() {
               {item.body}
             </Text>
             <Text style={{ marginTop: 10, color: "#0f172a", fontWeight: "800", fontSize: 12 }}>
-              합평 {item.critiques_count}
+              합평 {item.critiques_count}개
             </Text>
           </Pressable>
         )}
