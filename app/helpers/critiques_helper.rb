@@ -1,2 +1,0 @@
-module CritiquesHelper
-end

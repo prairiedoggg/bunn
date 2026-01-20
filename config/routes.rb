@@ -1,9 +1,6 @@
 Rails.application.routes.draw do
-  root "stories#index"
-
-  resources :stories do
-    resources :critiques, only: %i[create destroy]
-  end
+  # Rails는 API 서버로만 동작합니다. (UI는 Next.js)
+  root to: "rails/health#show"
 
   namespace :api do
     post "auth/register", to: "auth#register"

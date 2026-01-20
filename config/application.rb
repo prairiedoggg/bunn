@@ -26,6 +26,12 @@ module App
     config.i18n.default_locale = :ko
     # config.eager_load_paths << Rails.root.join("extras")
 
+    # API only (Next.js가 UI 담당)
+    # - 단, OmniAuth(OAuth callback)에는 session/cookies가 필요해서 최소한만 다시 추가합니다.
+    config.api_only = true
+    config.middleware.use ActionDispatch::Cookies
+    config.middleware.use ActionDispatch::Session::CookieStore, key: "_bunn_session"
+
     # HTTP flood(간단 DoS) 완화
     config.middleware.use Rack::Attack
   end
