@@ -13,7 +13,7 @@ module Api
       user.name = info["name"] if user.name.blank? && info["name"].present?
       user.save!
 
-      token = JsonWebToken.encode(user_id: user.id)
+      token = JsonWebToken.encode({ user_id: user.id })
       redirect_to success_redirect_url(token, return_to: request.env.dig("omniauth.params", "return_to"))
     rescue StandardError
       redirect_to failure_redirect_url("oauth_failed")

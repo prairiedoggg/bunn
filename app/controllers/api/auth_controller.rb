@@ -12,7 +12,7 @@ module Api
 
       user = User.new(email: email, password: password, name: params[:name])
       if user.save
-        render json: { token: JsonWebToken.encode(user_id: user.id), user: user_json(user) }, status: :created
+        render json: { token: JsonWebToken.encode({ user_id: user.id }), user: user_json(user) }, status: :created
       else
         render json: { errors: user.errors.full_messages }, status: :unprocessable_entity
       end
@@ -24,7 +24,7 @@ module Api
 
       user = User.find_by(email: email, provider: nil)
       if user&.authenticate(password)
-        render json: { token: JsonWebToken.encode(user_id: user.id), user: user_json(user) }
+        render json: { token: JsonWebToken.encode({ user_id: user.id }), user: user_json(user) }
       else
         render json: { error: "이메일 또는 비밀번호가 올바르지 않아요." }, status: :unauthorized
       end

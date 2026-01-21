@@ -25,7 +25,7 @@ class Api::StoriesControllerTest < ActionDispatch::IntegrationTest
     story.critiques.create!(body: "public", is_public: true, user: user)
     story.critiques.create!(body: "private", is_public: false, user: user)
 
-    token = JsonWebToken.encode(user_id: user.id)
+    token = JsonWebToken.encode({ user_id: user.id })
     get "/api/stories/#{story.id}", headers: { "Authorization" => "Bearer #{token}" }
     assert_response :success
 

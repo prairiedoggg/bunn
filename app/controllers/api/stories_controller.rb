@@ -50,7 +50,7 @@ module Api
     private
 
     def story_params
-      params.require(:story).permit(:title, :pen_name, :body, tags: [])
+      params.require(:story).permit(:title, :pen_name, :body)
     end
 
     def story_tags
